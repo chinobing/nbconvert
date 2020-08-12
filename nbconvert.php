@@ -1,8 +1,10 @@
 <?php
+error_reporting(0);
+
    /*
-   Plugin Name: NbConvert
+   Plugin Name: NbConvert_dct
    Description: A plugin to add ipynb files to a blog post or page using nbviewer
-   Version: 1.0
+   Version: 1.0.1
    Author: Andrew Challis
    Author URI: http://www.andrewchallis.com
    License: MIT
@@ -15,6 +17,7 @@ function nbconvert_handler($atts) {
   return $nb_output;
 }
 
+/*
 function nbconvert_get_most_recent_git_change_for_file_from_api($url) {
 
   $url_list = explode('/', $url);
@@ -45,7 +48,7 @@ function nbconvert_get_most_recent_git_change_for_file_from_api($url) {
   return $max_datetime_f;
 }
 
-/*
+
 function get_most_recent_git_change_for_file($url) {
   
   $url_list = explode('/', $url);
@@ -83,19 +86,18 @@ function nbconvert_function($atts) {
         'url' => "",
      ), $atts));
 
+
   $clean_url = preg_replace('#^https?://#', '', rtrim($url,'/'));
   $html = file_get_contents("https://nbviewer.jupyter.org/url/" . $clean_url);
+  if (empty($html))
+  {
+      $html = '<div id="notebook-container">Please refresh the page to load the code!</div>';
+      
+  }
   $nb_output = nbconvert_getHTMLByID('notebook-container', $html);
 
-  $last_update_date_time = nbconvert_get_most_recent_git_change_for_file_from_api($url);
 
   $converted_nb = '<div class="notebook">
-    <div class="nbconvert-labels">
-      <label class="github-link">
-        <a href="'.$url.'" target="_blank">Check it out on github</a>
-        <label class="github-last-update"> Last updated: '.$last_update_date_time.'</label>
-      </label>
-      </div>
     <div class="nbconvert">'.$nb_output.'
     </div>
   </div>';
@@ -128,7 +130,7 @@ function nbconvert_getHTMLByID($id, $html) {
 }
 
 function nbconvert_enqueue_style() {
-	wp_enqueue_style( 'NbConvert', plugins_url( '/css/nbconvert.css', __FILE__ ));
+	wp_enqueue_style( 'NbConvert', plugins_url( '/css/nbconvert.css?v=20200807 ', __FILE__ ));
 }
 add_action( 'wp_enqueue_scripts', 'nbconvert_enqueue_style' );
 add_shortcode("nbconvert", "nbconvert_handler");
