@@ -2,6 +2,11 @@ Remove github related code. It will no longer fetch any information like updated
 
 I also fixed the error when the link of the ipynb is unreachable.
 
+Thus, nbconvert can be used like following:
+
+`[nbconvert url="https://xxxxxx.com/xxxxxxxx.ipynb"]`
+
+
 
 # nbconvert
 
