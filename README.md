@@ -1,3 +1,8 @@
+Remove github related code. It will no longer fetch any information like updated date from github.
+
+I also fixed the error when the link of the ipynb is unreachable.
+
+
 # nbconvert
 
 ## Installation
